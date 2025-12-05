@@ -1,0 +1,169 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|c:\\users\\gomez\\documents\\notebridge\\notebridge\\frmpromissorynotesummary.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|solutionrelative:notebridge\\frmpromissorynotesummary.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|c:\\users\\gomez\\documents\\notebridge\\notebridge\\frmpromissorynotesummary.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|solutionrelative:notebridge\\frmpromissorynotesummary.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|c:\\users\\gomez\\documents\\notebridge\\notebridge\\frmstudentpayments.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|solutionrelative:notebridge\\frmstudentpayments.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|c:\\users\\gomez\\documents\\notebridge\\notebridge\\frmrequestpromissorynote.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|solutionrelative:notebridge\\frmrequestpromissorynote.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|c:\\users\\gomez\\documents\\notebridge\\notebridge\\frmviewpromissorynote.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|solutionrelative:notebridge\\frmviewpromissorynote.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|c:\\users\\gomez\\documents\\notebridge\\notebridge\\frmviewpromissorynote.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|solutionrelative:notebridge\\frmviewpromissorynote.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|c:\\users\\gomez\\documents\\notebridge\\notebridge\\frmrequestpromissorynote.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|solutionrelative:notebridge\\frmrequestpromissorynote.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|c:\\users\\gomez\\documents\\notebridge\\notebridge\\frmviewpermits.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|solutionrelative:notebridge\\frmviewpermits.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|c:\\users\\gomez\\documents\\notebridge\\notebridge\\frmlogin.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{4AB3CC2A-E2FD-44B9-9255-03BDEF7A437B}|NoteBridge\\NoteBridge.vbproj|solutionrelative:notebridge\\frmlogin.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "frmPromissoryNoteSummary.vb",
+              "DocumentMoniker": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmPromissoryNoteSummary.vb",
+              "RelativeDocumentMoniker": "NoteBridge\\frmPromissoryNoteSummary.vb",
+              "ToolTip": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmPromissoryNoteSummary.vb",
+              "RelativeToolTip": "NoteBridge\\frmPromissoryNoteSummary.vb",
+              "ViewState": "AgIAAIYAAAAAAAAAAADwv6AAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-12-04T12:53:53.362Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "frmPromissoryNoteSummary.vb [Design]",
+              "DocumentMoniker": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmPromissoryNoteSummary.vb",
+              "RelativeDocumentMoniker": "NoteBridge\\frmPromissoryNoteSummary.vb",
+              "ToolTip": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmPromissoryNoteSummary.vb [Design]",
+              "RelativeToolTip": "NoteBridge\\frmPromissoryNoteSummary.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-12-04T12:51:24.706Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "frmStudentPayments.vb",
+              "DocumentMoniker": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmStudentPayments.vb",
+              "RelativeDocumentMoniker": "NoteBridge\\frmStudentPayments.vb",
+              "ToolTip": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmStudentPayments.vb",
+              "RelativeToolTip": "NoteBridge\\frmStudentPayments.vb",
+              "ViewState": "AgIAAKMAAAAAAAAAAAAUwKwAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-12-04T12:29:02.334Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "frmViewPromissoryNote.vb",
+              "DocumentMoniker": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmViewPromissoryNote.vb",
+              "RelativeDocumentMoniker": "NoteBridge\\frmViewPromissoryNote.vb",
+              "ToolTip": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmViewPromissoryNote.vb",
+              "RelativeToolTip": "NoteBridge\\frmViewPromissoryNote.vb",
+              "ViewState": "AgIAAH0AAAAAAAAAAAAcwJgAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-12-04T12:12:57.362Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "frmViewPromissoryNote.vb [Design]",
+              "DocumentMoniker": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmViewPromissoryNote.vb",
+              "RelativeDocumentMoniker": "NoteBridge\\frmViewPromissoryNote.vb",
+              "ToolTip": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmViewPromissoryNote.vb [Design]",
+              "RelativeToolTip": "NoteBridge\\frmViewPromissoryNote.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-12-04T12:06:46.417Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "frmRequestPromissoryNote.vb",
+              "DocumentMoniker": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmRequestPromissoryNote.vb",
+              "RelativeDocumentMoniker": "NoteBridge\\frmRequestPromissoryNote.vb",
+              "ToolTip": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmRequestPromissoryNote.vb",
+              "RelativeToolTip": "NoteBridge\\frmRequestPromissoryNote.vb",
+              "ViewState": "AgIAAMMAAAAAAAAAAAAcwOcAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-12-04T11:57:44.812Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "frmRequestPromissoryNote.vb [Design]",
+              "DocumentMoniker": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmRequestPromissoryNote.vb",
+              "RelativeDocumentMoniker": "NoteBridge\\frmRequestPromissoryNote.vb",
+              "ToolTip": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmRequestPromissoryNote.vb [Design]",
+              "RelativeToolTip": "NoteBridge\\frmRequestPromissoryNote.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-12-04T11:51:23.828Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "frmLogin.vb [Design]",
+              "DocumentMoniker": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmLogin.vb",
+              "RelativeDocumentMoniker": "NoteBridge\\frmLogin.vb",
+              "ToolTip": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmLogin.vb [Design]",
+              "RelativeToolTip": "NoteBridge\\frmLogin.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-12-04T09:51:20.419Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "frmViewPermits.vb",
+              "DocumentMoniker": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmViewPermits.vb",
+              "RelativeDocumentMoniker": "NoteBridge\\frmViewPermits.vb",
+              "ToolTip": "C:\\Users\\GOMEZ\\Documents\\NoteBridge\\NoteBridge\\frmViewPermits.vb",
+              "RelativeToolTip": "NoteBridge\\frmViewPermits.vb",
+              "ViewState": "AgIAAK4AAAAAAAAAAAAUwNIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-12-04T09:32:23.345Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

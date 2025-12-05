@@ -1,0 +1,53 @@
+﻿Public Class frmAdminMainMenu
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Try
+            Dim dbFileName As String = "db_NoteBridge.accdb"
+            Dim foundPath As String = Nothing
+
+            ' Common candidate directories to check
+            Dim baseDirs As String() = {
+                AppDomain.CurrentDomain.BaseDirectory,
+                System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..")),
+                System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\..")),
+                Environment.CurrentDirectory,
+                Application.StartupPath
+            }
+
+            For Each d In baseDirs
+                If Not String.IsNullOrEmpty(d) Then
+                    Dim candidate = System.IO.Path.Combine(d, dbFileName)
+                    If System.IO.File.Exists(candidate) Then
+                        foundPath = d
+                        Exit For
+                    End If
+                End If
+            Next
+
+            ' If not found, walk up parent directories from the base directory
+            If foundPath Is Nothing Then
+                Dim dir = AppDomain.CurrentDomain.BaseDirectory
+                For i = 0 To 5
+                    If String.IsNullOrEmpty(dir) Then Exit For
+                    Dim candidate = System.IO.Path.Combine(dir, dbFileName)
+                    If System.IO.File.Exists(candidate) Then
+                        foundPath = dir
+                        Exit For
+                    End If
+                    dir = System.IO.Path.GetFullPath(System.IO.Path.Combine(dir, ".."))
+                Next
+            End If
+
+            If foundPath IsNot Nothing Then
+                AppDomain.CurrentDomain.SetData("DataDirectory", foundPath)
+            Else
+                MessageBox.Show("Database file '" & dbFileName & "' not found. Please ensure it exists and is copied to the output folder or update the connection string.", "Database not found", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End If
+        Catch ex As Exception
+            ' Non-fatal: fall back to default DataDirectory and allow any existing error handling to run
+        End Try
+
+        frmStudentPayments.Show()
+        Me.Hide()
+    End Sub
+End Class

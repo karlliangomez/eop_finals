@@ -1,0 +1,156 @@
+﻿Public Class frmStudentPayments
+    Dim dt As DataTable
+    Dim cmd As OleDbCommand
+    Dim da As OleDbDataAdapter
+
+    Private Sub frmStudentPayments_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'TODO: This line of code loads data into the 'Db_NoteBridgeDataSet.tblStudents' table. You can move, or remove it, as needed.
+        Me.TblStudentsTableAdapter.Fill(Me.Db_NoteBridgeDataSet.tblStudents)
+        txtDate.Text = Date.Now.ToString("MM/dd/yyyy")
+        LoadStudents()
+    End Sub
+
+    Private Sub LoadStudents()
+        Try
+            con.Open()
+            da = New OleDbDataAdapter("SELECT StudentNo, FullName, Course, YearSection, TotalAssessment FROM tblStudents", con)
+            dt = New DataTable
+            da.Fill(dt)
+            dgvStudents.DataSource = dt
+            con.Close()
+        Catch ex As Exception
+            MsgBox("Error loading students: " & ex.Message)
+            con.Close()
+        End Try
+    End Sub
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
+        Try
+            con.Open()
+            da = New OleDbDataAdapter("SELECT * FROM tblStudents WHERE StudentNo LIKE '%" & txtSearch.Text & "%' OR FullName LIKE '%" & txtSearch.Text & "%'", con)
+            dt = New DataTable
+            da.Fill(dt)
+            dgvStudents.DataSource = dt
+            con.Close()
+        Catch ex As Exception
+            MsgBox("Search error: " & ex.Message)
+            con.Close()
+        End Try
+    End Sub
+
+    Private Sub dgvStudents_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvStudents.CellClick
+        If e.RowIndex >= 0 Then
+            Dim row As DataGridViewRow = dgvStudents.Rows(e.RowIndex)
+
+            txtStudentNo.Text = row.Cells("StudentNo").Value.ToString()
+            txtStudentName.Text = row.Cells("FullName").Value.ToString()
+            txtCourse.Text = row.Cells("Course").Value.ToString()
+            txtYearSection.Text = row.Cells("YearSection").Value.ToString()
+
+            ' Load Total Assessment
+            txtTotalAssessment.Text = row.Cells("TotalAssessment").Value.ToString()
+
+            ' Load Pending Balance
+            LoadPendingBalance(txtStudentNo.Text)
+        End If
+    End Sub
+    Private Sub LoadPendingBalance(studentNo As String)
+        Try
+            con.Open()
+
+            ' 1. Get total assessment
+            Dim totalAssessment As Double = 0
+            cmd = New OleDbCommand("SELECT TotalAssessment FROM tblStudents WHERE StudentNo=@sn", con)
+            cmd.Parameters.AddWithValue("@sn", studentNo)
+            Dim result = cmd.ExecuteScalar()
+
+            If result IsNot Nothing AndAlso Not IsDBNull(result) Then
+                totalAssessment = CDbl(result)
+            End If
+
+            ' 2. Get total payments
+            cmd = New OleDbCommand("SELECT SUM(AmountPaid) FROM tblPayments WHERE StudentNo=@sn", con)
+            cmd.Parameters.AddWithValue("@sn", studentNo)
+            Dim totalPaidObj = cmd.ExecuteScalar()
+
+            Dim totalPaid As Double = 0
+            If totalPaidObj IsNot Nothing AndAlso Not IsDBNull(totalPaidObj) Then
+                totalPaid = CDbl(totalPaidObj)
+            End If
+
+            ' 3. Compute pending balance
+            txtPendingBalance.Text = (totalAssessment - totalPaid).ToString("0.00")
+
+            con.Close()
+
+        Catch ex As Exception
+            MsgBox("Error loading pending balance: " & ex.Message)
+            con.Close()
+        End Try
+    End Sub
+    Private Sub btnSavePayment_Click(sender As Object, e As EventArgs) Handles btnSavePayment.Click
+        Try
+            If txtStudentNo.Text = "" Or txtAmountPaid.Text = "" Or txtReceiptNo.Text = "" Then
+                MsgBox("Please fill out required fields.")
+                Exit Sub
+            End If
+
+            con.Open()
+            cmd = New OleDbCommand("INSERT INTO tblPayments (StudentNo, AmountPaid, ReceiptNo, PaymentDate) VALUES (@sn, @amt, @rcpt, @date)", con)
+
+            cmd.Parameters.AddWithValue("@sn", txtStudentNo.Text)
+            cmd.Parameters.AddWithValue("@amt", CDbl(txtAmountPaid.Text))
+            cmd.Parameters.AddWithValue("@rcpt", txtReceiptNo.Text)
+            cmd.Parameters.AddWithValue("@date", txtDate.Text)
+
+            cmd.ExecuteNonQuery()
+            con.Close()
+
+            MsgBox("Payment saved successfully!")
+
+            LoadPendingBalance(txtStudentNo.Text)
+            ClearFields()
+
+        Catch ex As Exception
+            MsgBox("Error saving payment: " & ex.Message)
+            con.Close()
+        End Try
+    End Sub
+    Private Sub btnUpdatePayment_Click(sender As Object, e As EventArgs) Handles btnUpdatePayment.Click
+        Try
+            con.Open()
+            cmd = New OleDbCommand("UPDATE tblPayments SET AmountPaid=@amt, ReceiptNo=@rcpt WHERE ReceiptNo=@rcpt", con)
+
+            cmd.Parameters.AddWithValue("@amt", txtAmountPaid.Text)
+            cmd.Parameters.AddWithValue("@rcpt", txtReceiptNo.Text)
+
+            cmd.ExecuteNonQuery()
+            con.Close()
+
+            MsgBox("Payment updated successfully!")
+
+            LoadPendingBalance(txtStudentNo.Text)
+
+        Catch ex As Exception
+            MsgBox("Error updating: " & ex.Message)
+            con.Close()
+        End Try
+    End Sub
+    Private Sub ClearFields()
+        txtStudentNo.Clear()
+        txtStudentName.Clear()
+        txtCourse.Clear()
+        txtYearSection.Clear()
+        txtTotalAssessment.Clear()
+        txtPendingBalance.Clear()
+        txtAmountPaid.Clear()
+        txtReceiptNo.Clear()
+        txtSearch.Clear()
+
+        txtDate.Text = Date.Now.ToString("MM/dd/yyyy")
+    End Sub
+    Private Sub btnRefresh_Click(sender As Object, e As EventArgs) Handles btnRefresh.Click
+        LoadStudents()
+        txtSearch.Clear()
+    End Sub
+
+End Class
