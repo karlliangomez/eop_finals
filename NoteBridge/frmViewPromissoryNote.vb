@@ -1,13 +1,23 @@
 ﻿Imports System.Data.OleDb
 Imports System.Drawing
+Imports System.Data ' Needed for DataTable
 
 Public Class frmViewPromissoryNote
 
-    ' Private DataTable to hold all PN request records for lookup
+    ' NOTE: LoggedStudentID must be set by the calling form.
+    Public LoggedStudentID As String
+
+    ' Private DataTable to hold all PN request records for lookup (now includes Semester)
     Private pnHistoryDataTable As New DataTable()
 
     Private Sub frmViewPromissoryNote_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Text = "Promissory Note History"
+
+        If String.IsNullOrEmpty(LoggedStudentID) Then
+            MessageBox.Show("Error: Student Number not found. Please log in again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Me.Close()
+            Exit Sub
+        End If
 
         ' Set all textboxes to Read-Only
         txtStudentNo.ReadOnly = True
@@ -15,6 +25,7 @@ Public Class frmViewPromissoryNote
         txtCourse.ReadOnly = True
         txtPNNumber.ReadOnly = True
         txtExamType.ReadOnly = True
+        txtSemester.ReadOnly = True ' 🛑 NEW TEXTBOX 🛑
         txtContactNo.ReadOnly = True
         txtStatus.ReadOnly = True
 
@@ -22,6 +33,10 @@ Public Class frmViewPromissoryNote
         LoadPNRequests()
         PopulatePNSelector()
     End Sub
+
+    ' -------------------------------------------------------------------------
+    ' ## Data Loading
+    ' -------------------------------------------------------------------------
 
     Private Sub LoadStudentDetails()
         Dim studentNo As String = LoggedStudentID
@@ -57,8 +72,8 @@ Public Class frmViewPromissoryNote
         If Not IsConnOpen() Then Exit Sub
 
         Try
-            ' Fetch all PN requests for the student, ordered by most recent date
-            Dim sql As String = "SELECT PNNumber, ExamType, ContactNo, GuardianName, RequestDate, Status " &
+            ' 🛑 MODIFIED SQL: Now selecting the Semester field 🛑
+            Dim sql As String = "SELECT PNNumber, ExamType, Semester, ContactNo, GuardianName, RequestDate, Status " &
                                 "FROM tblPNRequests WHERE StudentNo = @sno ORDER BY RequestDate DESC, RequestID DESC"
 
             Dim cmd As New OleDbCommand(sql, con)
@@ -74,6 +89,10 @@ Public Class frmViewPromissoryNote
         End Try
     End Sub
 
+    ' -------------------------------------------------------------------------
+    ' ## UI Population
+    ' -------------------------------------------------------------------------
+
     Private Sub PopulatePNSelector()
         cmbPNSelector.Items.Clear()
 
@@ -81,17 +100,23 @@ Public Class frmViewPromissoryNote
             cmbPNSelector.Items.Add("--- No Requests Found ---")
             cmbPNSelector.SelectedIndex = 0
             cmbPNSelector.Enabled = False
+
             ' Clear summary textboxes if no data exists
             txtPNNumber.Clear()
             txtExamType.Clear()
+            txtSemester.Clear() ' 🛑 CLEAR NEW TEXTBOX 🛑
             txtContactNo.Clear()
             txtStatus.Text = "N/A"
             Exit Sub
         End If
 
-        ' Add all PN requests, formatting as "Exam Type (PN Number)"
+        ' 🛑 MODIFIED DISPLAY: Add Semester to the ComboBox item 🛑
+        ' Format as "Exam Type (Semester) [PN Number]"
         For Each row As DataRow In pnHistoryDataTable.Rows
-            Dim displayItem As String = row("ExamType").ToString() & " (" & row("PNNumber").ToString() & ")"
+            Dim pnNumber As String = If(row("PNNumber") Is DBNull.Value, "N/A", row("PNNumber").ToString())
+            Dim semester As String = If(row("Semester") Is DBNull.Value, "N/A", row("Semester").ToString())
+
+            Dim displayItem As String = row("ExamType").ToString() & " (" & semester & ") [" & pnNumber & "]"
             cmbPNSelector.Items.Add(displayItem)
         Next
 
@@ -103,12 +128,12 @@ Public Class frmViewPromissoryNote
     Private Sub cmbPNSelector_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPNSelector.SelectedIndexChanged
         If cmbPNSelector.SelectedItem Is Nothing OrElse cmbPNSelector.Enabled = False Then Exit Sub
 
-        ' Extract the unique PN Number embedded in the ComboBox item: "Exam Type (PN-YYMM-000)"
+        ' Extract the unique PN Number embedded in the ComboBox item: "Exam Type (Semester) [PN-YYMM-000]"
         Dim selectedItem As String = cmbPNSelector.SelectedItem.ToString()
 
-        ' Find the PN number inside the parentheses
-        Dim startIndex As Integer = selectedItem.IndexOf("(") + 1
-        Dim endIndex As Integer = selectedItem.IndexOf(")")
+        ' Find the PN number inside the square brackets (more robust than parentheses alone)
+        Dim startIndex As Integer = selectedItem.IndexOf("[") + 1
+        Dim endIndex As Integer = selectedItem.IndexOf("]")
 
         If startIndex <= 0 OrElse endIndex <= startIndex Then
             Exit Sub
@@ -126,6 +151,7 @@ Public Class frmViewPromissoryNote
             ' Update Summary Textboxes
             txtPNNumber.Text = selectedRow("PNNumber").ToString()
             txtExamType.Text = selectedRow("ExamType").ToString()
+            txtSemester.Text = selectedRow("Semester").ToString() ' 🛑 DISPLAY NEW FIELD 🛑
             txtContactNo.Text = selectedRow("ContactNo").ToString()
             txtStatus.Text = selectedRow("Status").ToString()
 
@@ -145,6 +171,7 @@ Public Class frmViewPromissoryNote
             ' Clear summary fields if the PN is not found (shouldn't happen)
             txtPNNumber.Clear()
             txtExamType.Clear()
+            txtSemester.Clear()
             txtContactNo.Clear()
             txtStatus.Clear()
         End If

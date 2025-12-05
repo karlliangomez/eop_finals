@@ -33,6 +33,7 @@ Partial Class frmViewPayments
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.dgvSchedule = New System.Windows.Forms.DataGridView()
+        Me.cmbSemesterFilter = New System.Windows.Forms.ComboBox()
         CType(Me.dgvSchedule, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -123,12 +124,20 @@ Partial Class frmViewPayments
         Me.dgvSchedule.BackgroundColor = System.Drawing.Color.Green
         Me.dgvSchedule.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvSchedule.GridColor = System.Drawing.Color.Green
-        Me.dgvSchedule.Location = New System.Drawing.Point(12, 156)
+        Me.dgvSchedule.Location = New System.Drawing.Point(12, 166)
         Me.dgvSchedule.Name = "dgvSchedule"
         Me.dgvSchedule.ReadOnly = True
         Me.dgvSchedule.RowTemplate.Height = 24
-        Me.dgvSchedule.Size = New System.Drawing.Size(444, 282)
+        Me.dgvSchedule.Size = New System.Drawing.Size(444, 272)
         Me.dgvSchedule.TabIndex = 16
+        '
+        'cmbSemesterFilter
+        '
+        Me.cmbSemesterFilter.FormattingEnabled = True
+        Me.cmbSemesterFilter.Location = New System.Drawing.Point(39, 136)
+        Me.cmbSemesterFilter.Name = "cmbSemesterFilter"
+        Me.cmbSemesterFilter.Size = New System.Drawing.Size(380, 24)
+        Me.cmbSemesterFilter.TabIndex = 17
         '
         'frmViewPayments
         '
@@ -136,6 +145,7 @@ Partial Class frmViewPayments
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Green
         Me.ClientSize = New System.Drawing.Size(468, 450)
+        Me.Controls.Add(Me.cmbSemesterFilter)
         Me.Controls.Add(Me.dgvSchedule)
         Me.Controls.Add(Me.txtRemainingBalance)
         Me.Controls.Add(Me.txtTotalPaid)
@@ -167,4 +177,5 @@ Partial Class frmViewPayments
     Friend WithEvents Label2 As Label
     Friend WithEvents Label5 As Label
     Friend WithEvents dgvSchedule As DataGridView
+    Friend WithEvents cmbSemesterFilter As ComboBox
 End Class

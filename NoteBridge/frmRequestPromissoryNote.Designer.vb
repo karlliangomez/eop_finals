@@ -38,34 +38,37 @@ Partial Class frmRequestPromissoryNote
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.cmbExamType = New System.Windows.Forms.ComboBox()
-        Me.btnSubmitRequest = New System.Windows.Forms.Button()
-        Me.btnCancel = New System.Windows.Forms.Button()
+        Me.btnSubmit = New System.Windows.Forms.Button()
+        Me.btnClose = New System.Windows.Forms.Button()
+        Me.txtAmountDue = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.lblActiveSemester = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'txtYearSection
         '
-        Me.txtYearSection.Location = New System.Drawing.Point(216, 108)
+        Me.txtYearSection.Location = New System.Drawing.Point(219, 140)
         Me.txtYearSection.Name = "txtYearSection"
         Me.txtYearSection.Size = New System.Drawing.Size(187, 22)
         Me.txtYearSection.TabIndex = 33
         '
         'txtCourse
         '
-        Me.txtCourse.Location = New System.Drawing.Point(216, 80)
+        Me.txtCourse.Location = New System.Drawing.Point(219, 112)
         Me.txtCourse.Name = "txtCourse"
         Me.txtCourse.Size = New System.Drawing.Size(187, 22)
         Me.txtCourse.TabIndex = 32
         '
         'txtStudentName
         '
-        Me.txtStudentName.Location = New System.Drawing.Point(216, 52)
+        Me.txtStudentName.Location = New System.Drawing.Point(219, 84)
         Me.txtStudentName.Name = "txtStudentName"
         Me.txtStudentName.Size = New System.Drawing.Size(187, 22)
         Me.txtStudentName.TabIndex = 31
         '
         'txtStudentNo
         '
-        Me.txtStudentNo.Location = New System.Drawing.Point(216, 24)
+        Me.txtStudentNo.Location = New System.Drawing.Point(219, 56)
         Me.txtStudentNo.Name = "txtStudentNo"
         Me.txtStudentNo.ReadOnly = True
         Me.txtStudentNo.Size = New System.Drawing.Size(187, 22)
@@ -75,7 +78,7 @@ Partial Class frmRequestPromissoryNote
         '
         Me.Label4.AutoSize = True
         Me.Label4.ForeColor = System.Drawing.Color.White
-        Me.Label4.Location = New System.Drawing.Point(18, 111)
+        Me.Label4.Location = New System.Drawing.Point(21, 143)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(113, 16)
         Me.Label4.TabIndex = 29
@@ -85,7 +88,7 @@ Partial Class frmRequestPromissoryNote
         '
         Me.Label3.AutoSize = True
         Me.Label3.ForeColor = System.Drawing.Color.White
-        Me.Label3.Location = New System.Drawing.Point(18, 79)
+        Me.Label3.Location = New System.Drawing.Point(21, 111)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(53, 16)
         Me.Label3.TabIndex = 28
@@ -95,7 +98,7 @@ Partial Class frmRequestPromissoryNote
         '
         Me.Label2.AutoSize = True
         Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(18, 51)
+        Me.Label2.Location = New System.Drawing.Point(21, 83)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(95, 16)
         Me.Label2.TabIndex = 27
@@ -105,7 +108,7 @@ Partial Class frmRequestPromissoryNote
         '
         Me.Label5.AutoSize = True
         Me.Label5.ForeColor = System.Drawing.Color.White
-        Me.Label5.Location = New System.Drawing.Point(18, 24)
+        Me.Label5.Location = New System.Drawing.Point(21, 56)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(79, 16)
         Me.Label5.TabIndex = 26
@@ -114,21 +117,21 @@ Partial Class frmRequestPromissoryNote
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(43, 87)
+        Me.Label1.Location = New System.Drawing.Point(46, 119)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(0, 16)
         Me.Label1.TabIndex = 25
         '
         'txtGuardianName
         '
-        Me.txtGuardianName.Location = New System.Drawing.Point(216, 164)
+        Me.txtGuardianName.Location = New System.Drawing.Point(219, 196)
         Me.txtGuardianName.Name = "txtGuardianName"
         Me.txtGuardianName.Size = New System.Drawing.Size(187, 22)
         Me.txtGuardianName.TabIndex = 40
         '
         'txtContactNo
         '
-        Me.txtContactNo.Location = New System.Drawing.Point(216, 136)
+        Me.txtContactNo.Location = New System.Drawing.Point(219, 168)
         Me.txtContactNo.Name = "txtContactNo"
         Me.txtContactNo.Size = New System.Drawing.Size(187, 22)
         Me.txtContactNo.TabIndex = 39
@@ -137,7 +140,7 @@ Partial Class frmRequestPromissoryNote
         '
         Me.Label8.AutoSize = True
         Me.Label8.ForeColor = System.Drawing.Color.White
-        Me.Label8.Location = New System.Drawing.Point(18, 163)
+        Me.Label8.Location = New System.Drawing.Point(21, 195)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(105, 16)
         Me.Label8.TabIndex = 36
@@ -147,7 +150,7 @@ Partial Class frmRequestPromissoryNote
         '
         Me.Label9.AutoSize = True
         Me.Label9.ForeColor = System.Drawing.Color.White
-        Me.Label9.Location = New System.Drawing.Point(18, 136)
+        Me.Label9.Location = New System.Drawing.Point(21, 168)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(79, 16)
         Me.Label9.TabIndex = 35
@@ -156,7 +159,7 @@ Partial Class frmRequestPromissoryNote
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(43, 199)
+        Me.Label10.Location = New System.Drawing.Point(46, 231)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(0, 16)
         Me.Label10.TabIndex = 34
@@ -164,32 +167,59 @@ Partial Class frmRequestPromissoryNote
         'cmbExamType
         '
         Me.cmbExamType.FormattingEnabled = True
-        Me.cmbExamType.Location = New System.Drawing.Point(18, 191)
+        Me.cmbExamType.Location = New System.Drawing.Point(21, 253)
         Me.cmbExamType.Name = "cmbExamType"
         Me.cmbExamType.Size = New System.Drawing.Size(385, 24)
         Me.cmbExamType.TabIndex = 41
         '
-        'btnSubmitRequest
+        'btnSubmit
         '
-        Me.btnSubmitRequest.BackColor = System.Drawing.Color.Green
-        Me.btnSubmitRequest.ForeColor = System.Drawing.Color.White
-        Me.btnSubmitRequest.Location = New System.Drawing.Point(257, 273)
-        Me.btnSubmitRequest.Name = "btnSubmitRequest"
-        Me.btnSubmitRequest.Size = New System.Drawing.Size(113, 36)
-        Me.btnSubmitRequest.TabIndex = 43
-        Me.btnSubmitRequest.Text = "Submit"
-        Me.btnSubmitRequest.UseVisualStyleBackColor = False
+        Me.btnSubmit.BackColor = System.Drawing.Color.Green
+        Me.btnSubmit.ForeColor = System.Drawing.Color.White
+        Me.btnSubmit.Location = New System.Drawing.Point(260, 305)
+        Me.btnSubmit.Name = "btnSubmit"
+        Me.btnSubmit.Size = New System.Drawing.Size(113, 36)
+        Me.btnSubmit.TabIndex = 43
+        Me.btnSubmit.Text = "Submit"
+        Me.btnSubmit.UseVisualStyleBackColor = False
         '
-        'btnCancel
+        'btnClose
         '
-        Me.btnCancel.BackColor = System.Drawing.Color.Green
-        Me.btnCancel.ForeColor = System.Drawing.Color.White
-        Me.btnCancel.Location = New System.Drawing.Point(53, 273)
-        Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(113, 36)
-        Me.btnCancel.TabIndex = 42
-        Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.UseVisualStyleBackColor = False
+        Me.btnClose.BackColor = System.Drawing.Color.Green
+        Me.btnClose.ForeColor = System.Drawing.Color.White
+        Me.btnClose.Location = New System.Drawing.Point(56, 305)
+        Me.btnClose.Name = "btnClose"
+        Me.btnClose.Size = New System.Drawing.Size(113, 36)
+        Me.btnClose.TabIndex = 42
+        Me.btnClose.Text = "Cancel"
+        Me.btnClose.UseVisualStyleBackColor = False
+        '
+        'txtAmountDue
+        '
+        Me.txtAmountDue.Location = New System.Drawing.Point(219, 225)
+        Me.txtAmountDue.Name = "txtAmountDue"
+        Me.txtAmountDue.Size = New System.Drawing.Size(187, 22)
+        Me.txtAmountDue.TabIndex = 45
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.ForeColor = System.Drawing.Color.White
+        Me.Label6.Location = New System.Drawing.Point(21, 224)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(83, 16)
+        Me.Label6.TabIndex = 44
+        Me.Label6.Text = "Amount Due:"
+        '
+        'lblActiveSemester
+        '
+        Me.lblActiveSemester.AutoSize = True
+        Me.lblActiveSemester.ForeColor = System.Drawing.Color.Green
+        Me.lblActiveSemester.Location = New System.Drawing.Point(21, 23)
+        Me.lblActiveSemester.Name = "lblActiveSemester"
+        Me.lblActiveSemester.Size = New System.Drawing.Size(65, 16)
+        Me.lblActiveSemester.TabIndex = 46
+        Me.lblActiveSemester.Text = "Semester"
         '
         'frmRequestPromissoryNote
         '
@@ -197,8 +227,11 @@ Partial Class frmRequestPromissoryNote
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Green
         Me.ClientSize = New System.Drawing.Size(430, 362)
-        Me.Controls.Add(Me.btnSubmitRequest)
-        Me.Controls.Add(Me.btnCancel)
+        Me.Controls.Add(Me.lblActiveSemester)
+        Me.Controls.Add(Me.txtAmountDue)
+        Me.Controls.Add(Me.Label6)
+        Me.Controls.Add(Me.btnSubmit)
+        Me.Controls.Add(Me.btnClose)
         Me.Controls.Add(Me.cmbExamType)
         Me.Controls.Add(Me.txtGuardianName)
         Me.Controls.Add(Me.txtContactNo)
@@ -239,6 +272,9 @@ Partial Class frmRequestPromissoryNote
     Friend WithEvents Label9 As Label
     Friend WithEvents Label10 As Label
     Friend WithEvents cmbExamType As ComboBox
-    Friend WithEvents btnSubmitRequest As Button
-    Friend WithEvents btnCancel As Button
+    Friend WithEvents btnSubmit As Button
+    Friend WithEvents btnClose As Button
+    Friend WithEvents txtAmountDue As TextBox
+    Friend WithEvents Label6 As Label
+    Friend WithEvents lblActiveSemester As Label
 End Class

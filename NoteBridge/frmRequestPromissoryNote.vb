@@ -1,53 +1,71 @@
 ﻿Imports System.Data.OleDb
-Imports System.Drawing
-Imports System.Linq
+Imports System.Linq ' REQUIRED for LINQ operations on the Dictionary
 
 Public Class frmRequestPromissoryNote
 
-    ' Dictionary to map Installment Number (after Installment 1/Downpayment) to Exam Type
-    ' 🛑 FINALS EXAM (Installment 7) IS INTENTIONALLY EXCLUDED 🛑
+    Public StudentNo As String
+
+    ' Global variables to hold the financial context
+    Private activeSemester As String
+    Private nextInstallmentNo As Integer = 1
+
+    ' Dictionary to map Installment Number to Exam Type 
     Private ReadOnly ExamMap As New Dictionary(Of Integer, String) From {
         {2, "Long Test (Prelims)"},
         {3, "Prelim Exam"},
         {4, "Long Test (Midterms)"},
         {5, "Midterm Exam"},
-        {6, "Pre-Finals Exam"}
+        {6, "Pre-Finals Exam"},
+        {7, "Finals Exam"}
     }
 
     Private Sub frmRequestPromissoryNote_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Me.Text = "Request Promissory Note"
+        Me.Text = "Promissory Note Request"
 
-        ' Set read-only fields for student details
-        txtStudentNo.ReadOnly = True
-        txtStudentName.ReadOnly = True
-        txtCourse.ReadOnly = True
-        txtYearSection.ReadOnly = True
+        ' Assume txtAmountDue, txtStudentNo, txtStudentName, txtCourse, txtYearSection, 
+        ' lblActiveSemester, cmbExamType, txtGuardianName exist.
 
-        LoadStudentDetails()
-        PopulateExamComboBox()
+        If String.IsNullOrEmpty(StudentNo) Then
+            MessageBox.Show("Student ID not loaded. Please log in again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Me.Close()
+            Exit Sub
+        End If
+
+        LoadStudentInfo(StudentNo)
     End Sub
 
-    Private Sub LoadStudentDetails()
-        Dim studentNo As String = LoggedStudentID
-        txtStudentNo.Text = studentNo
+    ' --------------------------------------------------------------------------------
+    ' ## Data Loading and Semester Detection
+    ' --------------------------------------------------------------------------------
 
+    Private Sub LoadStudentInfo(sno As String)
         If Not IsConnOpen() Then Exit Sub
 
         Try
+            ' 1. Fetch Student Details
             Dim sql As String = "SELECT StudentName, Course, YearSection FROM tblStudents WHERE StudentNo = @sno"
             Dim cmd As New OleDbCommand(sql, con)
-            cmd.Parameters.AddWithValue("@sno", studentNo)
+            cmd.Parameters.AddWithValue("@sno", sno)
 
+            ' 🛑 FIX: Using block ensures dr is properly handled and closes the reader. 🛑
             Using dr As OleDbDataReader = cmd.ExecuteReader()
                 If dr.Read() Then
+                    txtStudentNo.Text = sno
                     txtStudentName.Text = dr("StudentName").ToString()
                     txtCourse.Text = dr("Course").ToString()
                     txtYearSection.Text = dr("YearSection").ToString()
+
+                    ' 2. Determine and Store Active Semester
+                    DetermineActiveSemester(sno)
                 Else
-                    MessageBox.Show("Student details not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    MessageBox.Show("Student record not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                     Me.Close()
+                    Exit Sub
                 End If
-            End Using
+            End Using ' dr is closed automatically here
+
+            ' 3. Populate Exam Types based on the determined next installment
+            PopulateExamTypes()
 
         Catch ex As Exception
             MessageBox.Show("Error loading student details: " & ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -56,176 +74,180 @@ Public Class frmRequestPromissoryNote
         End Try
     End Sub
 
-    ' Logic to populate ComboBox, excluding already requested PNs and cleared payments.
-    Private Sub PopulateExamComboBox()
-        Dim studentNo As String = LoggedStudentID
-
+    Private Sub DetermineActiveSemester(sno As String)
+        ' Find the semester and installment number with the earliest unpaid payment
         If Not IsConnOpen() Then Exit Sub
 
-        Try
-            ' --- A. Find the smallest InstallmentNo that is NOT paid (Next Due Exam) ---
-            Dim sqlNextDue As String = "SELECT MIN(InstallmentNo) FROM tblPaymentSchedule WHERE StudentNo = @sno AND IsPaid = FALSE"
-            Dim cmdNextDue As New OleDbCommand(sqlNextDue, con)
-            cmdNextDue.Parameters.AddWithValue("@sno", studentNo)
+        Dim sqlActiveSem As String = "SELECT TOP 1 Semester, InstallmentNo FROM tblPaymentSchedule WHERE StudentNo = @sno AND IsPaid = FALSE ORDER BY Semester ASC, InstallmentNo ASC"
+        Dim cmdActiveSem As New OleDbCommand(sqlActiveSem, con)
+        cmdActiveSem.Parameters.AddWithValue("@sno", sno)
 
-            Dim nextDueInstallment As Integer = 0
-            Dim result = cmdNextDue.ExecuteScalar()
+        Using drSem As OleDbDataReader = cmdActiveSem.ExecuteReader()
+            If drSem.Read() Then
+                activeSemester = drSem("Semester").ToString()
+                nextInstallmentNo = Convert.ToInt32(drSem("InstallmentNo"))
 
-            If result IsNot DBNull.Value AndAlso result IsNot Nothing Then
-                nextDueInstallment = Convert.ToInt32(result)
-            End If
-
-            ' --- B. Get list of Exam Types that already have a PN Request ---
-            Dim requestedExams As New List(Of String)
-            Dim sqlRequested As String = "SELECT ExamType FROM tblPNRequests WHERE StudentNo = @sno"
-            Dim cmdRequested As New OleDbCommand(sqlRequested, con)
-            cmdRequested.Parameters.AddWithValue("@sno", studentNo)
-
-            Using dr As OleDbDataReader = cmdRequested.ExecuteReader()
-                While dr.Read()
-                    requestedExams.Add(dr("ExamType").ToString())
-                End While
-            End Using
-
-            cmbExamType.Items.Clear()
-
-            ' --- C. Populate ComboBox with only available exams ---
-            For Each entry In ExamMap
-                If entry.Key >= nextDueInstallment Then
-                    ' Check if the exam type has ALREADY been requested
-                    If Not requestedExams.Contains(entry.Value) Then
-                        cmbExamType.Items.Add(entry.Value)
-                    End If
-                End If
-            Next
-
-            If cmbExamType.Items.Count > 0 Then
-                cmbExamType.SelectedIndex = 0
-                cmbExamType.Enabled = True
+                lblActiveSemester.Text = "Requesting for: " & activeSemester
+                lblActiveSemester.BackColor = System.Drawing.Color.LightYellow
             Else
-                ' Determine why the ComboBox is empty: either fully paid, or all needed PNs requested
-                If nextDueInstallment = 0 OrElse nextDueInstallment > ExamMap.Keys.Max() Then
-                    cmbExamType.Items.Add("All Payments Cleared")
-                Else
-                    cmbExamType.Items.Add("PN Already Requested for Next Exam")
-                End If
-
-                cmbExamType.SelectedIndex = 0
-                cmbExamType.Enabled = False
-                MessageBox.Show("You cannot request a Promissory Note at this time. Either all necessary PNs have been requested, or all your payments are cleared.", "Request Not Available", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                activeSemester = ""
+                nextInstallmentNo = 7 ' Max installment number
+                lblActiveSemester.Text = "Payment schedule clear."
+                lblActiveSemester.BackColor = System.Drawing.Color.LightGreen
+                ' We don't show the MessageBox here to prevent interruption on load.
             End If
-
-        Catch ex As Exception
-            MessageBox.Show("Error populating exam list: " & ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Finally
-            If con.State = ConnectionState.Open Then con.Close()
-        End Try
+        End Using
     End Sub
 
-    Private Sub btnSubmitRequest_Click(sender As Object, e As EventArgs) Handles btnSubmitRequest.Click
-        ' --- 1. Validation ---
-        If txtContactNo.Text.Length < 7 Or txtGuardianName.Text = "" Or cmbExamType.SelectedItem Is Nothing Or cmbExamType.SelectedItem.ToString().Contains("Cleared") Or cmbExamType.SelectedItem.ToString().Contains("Already Requested") Then
-            MessageBox.Show("Please ensure all fields are filled and a valid Exam Type is selected.", "Missing Information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+    Private Sub PopulateExamTypes()
+        cmbExamType.Items.Clear()
+
+        ' Only show exam types that correspond to the next required installment or later
+        Dim validExams = ExamMap.Where(Function(kvp) kvp.Key >= nextInstallmentNo) _
+                               .OrderBy(Function(kvp) kvp.Key)
+
+        For Each kvp In validExams
+            cmbExamType.Items.Add(kvp.Value)
+        Next
+
+        If cmbExamType.Items.Count > 0 Then
+            cmbExamType.SelectedIndex = 0
+            cmbExamType.Enabled = True
+        Else
+            cmbExamType.Enabled = False
+            txtAmountDue.Text = "N/A"
+        End If
+    End Sub
+
+    ' --------------------------------------------------------------------------------
+    ' ## Check Amount Due when Exam Type changes
+    ' --------------------------------------------------------------------------------
+
+    Private Sub cmbExamType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbExamType.SelectedIndexChanged
+        If cmbExamType.SelectedIndex = -1 OrElse String.IsNullOrEmpty(activeSemester) Then
+            txtAmountDue.Text = ""
             Exit Sub
         End If
 
-        Dim examType As String = cmbExamType.SelectedItem.ToString()
-        Dim studentNo As String = txtStudentNo.Text
-        Dim currentStatus As String = ""
-        Dim insertedRequestID As Integer = 0
-
         If Not IsConnOpen() Then Exit Sub
 
+        Dim selectedExamType As String = cmbExamType.SelectedItem.ToString()
+        ' Use LINQ to find the corresponding InstallmentNo
+        Dim instNo As Integer = ExamMap.FirstOrDefault(Function(kvp) kvp.Value = selectedExamType).Key
+
+        If instNo = 0 Then
+            txtAmountDue.Text = "Error"
+            Exit Sub
+        End If
+
         Try
-            ' --- 2. Check for Existing Pending Request (Safeguard) ---
-            Dim sqlCheck As String = "SELECT COUNT(*) FROM tblPNRequests WHERE StudentNo = @sno AND Status = 'Pending (Review Required)'"
-            Dim cmdCheck As New OleDbCommand(sqlCheck, con)
-            cmdCheck.Parameters.AddWithValue("@sno", studentNo)
+            Dim sqlBalance As String = "SELECT Balance FROM tblPaymentSchedule WHERE StudentNo = @sno AND Semester = @sem AND InstallmentNo = @instNo"
+            Dim cmdBalance As New OleDbCommand(sqlBalance, con)
+            cmdBalance.Parameters.AddWithValue("@sno", StudentNo)
+            cmdBalance.Parameters.AddWithValue("@sem", activeSemester)
+            cmdBalance.Parameters.AddWithValue("@instNo", instNo)
 
-            If Convert.ToInt32(cmdCheck.ExecuteScalar()) > 0 Then
-                MessageBox.Show("You already have a Pending Promissory Note Request. Please wait for approval.", "Request Conflict", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                Exit Sub
+            Dim balanceResult = cmdBalance.ExecuteScalar()
+            Dim balance As Decimal = 0D
+
+            If balanceResult IsNot DBNull.Value AndAlso balanceResult IsNot Nothing Then
+                balance = Convert.ToDecimal(balanceResult)
             End If
 
-            ' --- 3. Determine Auto-Approval Status (before insertion) ---
+            txtAmountDue.Text = balance.ToString("C2")
 
-            Dim sqlMaxPaid As String = "SELECT MAX(InstallmentNo) FROM tblPaymentSchedule WHERE StudentNo = @sno AND IsPaid = TRUE"
-            Dim cmdMaxPaid As New OleDbCommand(sqlMaxPaid, con)
-            cmdMaxPaid.Parameters.AddWithValue("@sno", studentNo)
-
-            Dim maxPaidInstallment As Integer = 0
-            Dim paidResult = cmdMaxPaid.ExecuteScalar()
-
-            If paidResult IsNot DBNull.Value AndAlso paidResult IsNot Nothing Then
-                maxPaidInstallment = Convert.ToInt32(paidResult)
-            End If
-
-            ' Get the installment number corresponding to the requested ExamType
-            ' .Key is safe because we filtered the ComboBox based on the ExamMap.
-            Dim requestedInstallment As Integer = ExamMap.FirstOrDefault(Function(x) x.Value = examType).Key
-
-            If requestedInstallment = 0 Then
-                ' Should not happen with the filtered ExamMap, but handle defensively
-                MessageBox.Show("Error: Requested exam type not found in installment map.", "System Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Exit Sub
-            End If
-
-            ' CRITICAL AUTO-APPROVAL RULE:
-            If maxPaidInstallment >= (requestedInstallment - 1) Then
-                currentStatus = "Approved (Auto)"
+            If balance > 0 Then
+                txtAmountDue.BackColor = System.Drawing.Color.Red
+                txtAmountDue.ForeColor = System.Drawing.Color.White
             Else
-                currentStatus = "Pending (Review Required)"
+                txtAmountDue.BackColor = System.Drawing.Color.LightGreen
+                txtAmountDue.ForeColor = System.Drawing.Color.Black
             End If
-
-            ' --- 4. INSERT REQUEST & RETRIEVE AUTONUMBER (RequestID) ---
-
-            ' Insert without PNNumber first
-            Dim sqlInsert As String = "INSERT INTO tblPNRequests (StudentNo, ContactNo, GuardianName, ExamType, RequestDate, Status) " &
-                                      "VALUES (@sno, @contact, @guardian, @exam, @date, @status)"
-
-            Dim cmdInsert As New OleDbCommand(sqlInsert, con)
-            cmdInsert.Parameters.AddWithValue("@sno", studentNo)
-            cmdInsert.Parameters.AddWithValue("@contact", txtContactNo.Text)
-            cmdInsert.Parameters.AddWithValue("@guardian", txtGuardianName.Text)
-            cmdInsert.Parameters.AddWithValue("@exam", examType)
-            cmdInsert.Parameters.AddWithValue("@date", Date.Today.ToShortDateString())
-            cmdInsert.Parameters.AddWithValue("@status", currentStatus)
-
-            cmdInsert.ExecuteNonQuery()
-
-            ' Retrieve the last generated AutoNumber (RequestID)
-            Dim cmdGetID As New OleDbCommand("SELECT @@IDENTITY", con)
-            insertedRequestID = CInt(cmdGetID.ExecuteScalar())
-
-            ' --- 5. GENERATE PN NUMBER using RequestID ---
-            Dim yearMonth As String = DateTime.Now.ToString("yyMM")
-            Dim newPNNumber As String = "PN-" & yearMonth & "-" & insertedRequestID.ToString("D3")
-
-            ' --- 6. UPDATE RECORD with the new PN Number ---
-            Dim sqlUpdatePN As String = "UPDATE tblPNRequests SET PNNumber = @pn WHERE RequestID = @rid"
-            Dim cmdUpdatePN As New OleDbCommand(sqlUpdatePN, con)
-            cmdUpdatePN.Parameters.AddWithValue("@pn", newPNNumber)
-            cmdUpdatePN.Parameters.AddWithValue("@rid", insertedRequestID)
-
-            cmdUpdatePN.ExecuteNonQuery()
-
-            ' --- 7. Final User Feedback ---
-            If currentStatus.StartsWith("Approved") Then
-                MessageBox.Show("PN Request (" & newPNNumber & ") for " & examType & " is automatically **APPROVED**!", "Request Approved", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            Else
-                MessageBox.Show("PN Request (" & newPNNumber & ") for " & examType & " is set to **PENDING**.", "Request Pending", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            End If
-
-            Me.Close()
 
         Catch ex As Exception
-            MessageBox.Show("Error submitting request: " & ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            txtAmountDue.Text = "Error"
+            MessageBox.Show("Error checking installment balance: " & ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             If con.State = ConnectionState.Open Then con.Close()
         End Try
     End Sub
 
-    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+    ' --------------------------------------------------------------------------------
+    ' ## Request Submission Logic
+    ' --------------------------------------------------------------------------------
+
+    Private Sub btnSubmit_Click(sender As Object, e As EventArgs) Handles btnSubmit.Click
+
+        If String.IsNullOrEmpty(activeSemester) OrElse txtAmountDue.Text = 0.ToString("C2") Then
+            MessageBox.Show("Cannot submit request. Payment schedule is clear or selected installment is fully paid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Exit Sub
+        End If
+
+        If cmbExamType.SelectedIndex = -1 OrElse String.IsNullOrEmpty(txtGuardianName.Text) Then
+            MessageBox.Show("Please select an Exam Type and enter Guardian Name.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Exit Sub
+        End If
+
+        Dim selectedExamType As String = cmbExamType.SelectedItem.ToString()
+        Dim guardianName As String = txtGuardianName.Text.Trim()
+
+        If Not IsConnOpen() Then Exit Sub
+
+        Try
+            ' 1. Check if a PN already exists for this exam type and semester
+            Dim sqlCheck As String = "SELECT COUNT(*) FROM tblPNRequests WHERE StudentNo = @sno AND ExamType = @exam AND Semester = @sem"
+            Using cmdCheck As New OleDbCommand(sqlCheck, con)
+                cmdCheck.Parameters.AddWithValue("@sno", StudentNo)
+                cmdCheck.Parameters.AddWithValue("@exam", selectedExamType)
+                cmdCheck.Parameters.AddWithValue("@sem", activeSemester)
+
+                Dim count As Integer = CInt(cmdCheck.ExecuteScalar())
+
+                If count > 0 Then
+                    MessageBox.Show("A Promissory Note request for the " & selectedExamType & " in the " & activeSemester & " already exists.", "Request Exists", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    Exit Sub
+                End If
+            End Using
+
+            ' 2. Insert the New PN Request
+            Dim sqlInsert As String = "INSERT INTO tblPNRequests (StudentNo, ExamType, GuardianName, RequestDate, Status, Semester) " &
+                                      "VALUES (@sno, @exam, @gname, @rdate, @status, @sem)"
+            Using cmdInsert As New OleDbCommand(sqlInsert, con)
+                cmdInsert.Parameters.AddWithValue("@sno", StudentNo)
+                cmdInsert.Parameters.AddWithValue("@exam", selectedExamType)
+                cmdInsert.Parameters.AddWithValue("@gname", guardianName)
+                cmdInsert.Parameters.AddWithValue("@rdate", DateTime.Now.ToShortDateString())
+                cmdInsert.Parameters.AddWithValue("@status", "Pending (Review Required)")
+                cmdInsert.Parameters.AddWithValue("@sem", activeSemester)
+
+                cmdInsert.ExecuteNonQuery()
+            End Using
+
+            MessageBox.Show("Promissory Note request for the " & selectedExamType & " submitted successfully for the " & activeSemester & ". Status is Pending.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+            ClearFields()
+            Me.Close()
+
+        Catch ex As Exception
+            MessageBox.Show("Error submitting PN request: " & ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            If con.State = ConnectionState.Open Then con.Close()
+        End Try
+    End Sub
+
+    ' --------------------------------------------------------------------------------
+    ' ## Utility
+    ' --------------------------------------------------------------------------------
+
+    Private Sub ClearFields()
+        txtGuardianName.Clear()
+        If cmbExamType.Items.Count > 0 Then cmbExamType.SelectedIndex = 0
+        txtAmountDue.Clear()
+        txtAmountDue.BackColor = System.Drawing.SystemColors.Control
+        txtAmountDue.ForeColor = System.Drawing.Color.Black
+    End Sub
+
+    Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click
         Me.Close()
     End Sub
 

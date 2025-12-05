@@ -44,10 +44,12 @@ Partial Class frmStudentPayments
         Me.txtDate = New System.Windows.Forms.TextBox()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.btnSave = New System.Windows.Forms.Button()
-        Me.btnUpdatePayment = New System.Windows.Forms.Button()
+        Me.btnUpdateAssessment = New System.Windows.Forms.Button()
         Me.btnClear = New System.Windows.Forms.Button()
         Me.btnSearch = New System.Windows.Forms.Button()
         Me.txtSearch = New System.Windows.Forms.TextBox()
+        Me.cmbUpdateSemester = New System.Windows.Forms.ComboBox()
+        Me.lblActiveSemester = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Label1
@@ -243,7 +245,7 @@ Partial Class frmStudentPayments
         'btnSave
         '
         Me.btnSave.BackColor = System.Drawing.Color.Green
-        Me.btnSave.Location = New System.Drawing.Point(16, 420)
+        Me.btnSave.Location = New System.Drawing.Point(16, 439)
         Me.btnSave.Margin = New System.Windows.Forms.Padding(4)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(109, 28)
@@ -251,21 +253,21 @@ Partial Class frmStudentPayments
         Me.btnSave.Text = "Save"
         Me.btnSave.UseVisualStyleBackColor = False
         '
-        'btnUpdatePayment
+        'btnUpdateAssessment
         '
-        Me.btnUpdatePayment.BackColor = System.Drawing.Color.Green
-        Me.btnUpdatePayment.Location = New System.Drawing.Point(146, 420)
-        Me.btnUpdatePayment.Margin = New System.Windows.Forms.Padding(4)
-        Me.btnUpdatePayment.Name = "btnUpdatePayment"
-        Me.btnUpdatePayment.Size = New System.Drawing.Size(109, 28)
-        Me.btnUpdatePayment.TabIndex = 24
-        Me.btnUpdatePayment.Text = "Update"
-        Me.btnUpdatePayment.UseVisualStyleBackColor = False
+        Me.btnUpdateAssessment.BackColor = System.Drawing.Color.Green
+        Me.btnUpdateAssessment.Location = New System.Drawing.Point(146, 439)
+        Me.btnUpdateAssessment.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnUpdateAssessment.Name = "btnUpdateAssessment"
+        Me.btnUpdateAssessment.Size = New System.Drawing.Size(109, 28)
+        Me.btnUpdateAssessment.TabIndex = 24
+        Me.btnUpdateAssessment.Text = "Update"
+        Me.btnUpdateAssessment.UseVisualStyleBackColor = False
         '
         'btnClear
         '
         Me.btnClear.BackColor = System.Drawing.Color.Green
-        Me.btnClear.Location = New System.Drawing.Point(269, 420)
+        Me.btnClear.Location = New System.Drawing.Point(269, 439)
         Me.btnClear.Margin = New System.Windows.Forms.Padding(4)
         Me.btnClear.Name = "btnClear"
         Me.btnClear.Size = New System.Drawing.Size(109, 28)
@@ -293,14 +295,33 @@ Partial Class frmStudentPayments
         Me.txtSearch.Size = New System.Drawing.Size(269, 25)
         Me.txtSearch.TabIndex = 20
         '
+        'cmbUpdateSemester
+        '
+        Me.cmbUpdateSemester.FormattingEnabled = True
+        Me.cmbUpdateSemester.Location = New System.Drawing.Point(17, 402)
+        Me.cmbUpdateSemester.Name = "cmbUpdateSemester"
+        Me.cmbUpdateSemester.Size = New System.Drawing.Size(361, 24)
+        Me.cmbUpdateSemester.TabIndex = 26
+        '
+        'lblActiveSemester
+        '
+        Me.lblActiveSemester.AutoSize = True
+        Me.lblActiveSemester.Location = New System.Drawing.Point(313, 231)
+        Me.lblActiveSemester.Name = "lblActiveSemester"
+        Me.lblActiveSemester.Size = New System.Drawing.Size(65, 16)
+        Me.lblActiveSemester.TabIndex = 27
+        Me.lblActiveSemester.Text = "Semester"
+        '
         'frmStudentPayments
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Green
         Me.ClientSize = New System.Drawing.Size(399, 488)
+        Me.Controls.Add(Me.lblActiveSemester)
+        Me.Controls.Add(Me.cmbUpdateSemester)
         Me.Controls.Add(Me.btnClear)
-        Me.Controls.Add(Me.btnUpdatePayment)
+        Me.Controls.Add(Me.btnUpdateAssessment)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.btnSearch)
         Me.Controls.Add(Me.txtSearch)
@@ -355,7 +376,7 @@ Partial Class frmStudentPayments
     Friend WithEvents txtDate As TextBox
     Friend WithEvents Label11 As Label
     Friend WithEvents btnSave As Button
-    Friend WithEvents btnUpdatePayment As Button
+    Friend WithEvents btnUpdateAssessment As Button
     Friend WithEvents btnClear As Button
     Friend WithEvents StudentNo As DataGridViewTextBoxColumn
     Friend WithEvents StudentName As DataGridViewTextBoxColumn
@@ -364,4 +385,6 @@ Partial Class frmStudentPayments
     Friend WithEvents DbNoteBridgeDataSetBindingSource As BindingSource
     Friend WithEvents btnSearch As Button
     Friend WithEvents txtSearch As TextBox
+    Friend WithEvents cmbUpdateSemester As ComboBox
+    Friend WithEvents lblActiveSemester As Label
 End Class

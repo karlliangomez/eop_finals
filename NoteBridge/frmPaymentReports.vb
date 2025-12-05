@@ -19,7 +19,8 @@ Public Class frmPaymentReports
 
         Try
             ' SQL to fetch all necessary payment data, joining with Students table
-            Dim sql As String = "SELECT P.ReceiptNo, P.PaymentDate, P.AmountPaid, P.StudentNo, S.StudentName, S.Course " &
+            ' 🛑 CHANGE: Added P.Semester to the SELECT statement 🛑
+            Dim sql As String = "SELECT P.ReceiptNo, P.PaymentDate, P.AmountPaid, P.StudentNo, S.StudentName, S.Course, P.Semester " &
                                 "FROM tblPayments AS P INNER JOIN tblStudents AS S ON P.StudentNo = S.StudentNo " &
                                 "ORDER BY P.PaymentDate DESC"
 
@@ -41,6 +42,8 @@ Public Class frmPaymentReports
             If dgvPayments.Columns.Contains("StudentNo") Then dgvPayments.Columns("StudentNo").HeaderText = "Student No."
             If dgvPayments.Columns.Contains("StudentName") Then dgvPayments.Columns("StudentName").HeaderText = "Student Name"
             If dgvPayments.Columns.Contains("Course") Then dgvPayments.Columns("Course").HeaderText = "Course"
+            ' 🛑 NEW HEADER: Add header for Semester 🛑
+            If dgvPayments.Columns.Contains("Semester") Then dgvPayments.Columns("Semester").HeaderText = "Semester"
 
 
         Catch ex As Exception

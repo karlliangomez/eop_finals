@@ -43,6 +43,7 @@ Partial Class frmNewStudent
         Me.txtUserType = New System.Windows.Forms.TextBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.btnCancel = New System.Windows.Forms.Button()
+        Me.cmbSemester = New System.Windows.Forms.ComboBox()
         Me.SuspendLayout()
         '
         'txtTotalAssessment
@@ -149,14 +150,13 @@ Partial Class frmNewStudent
         'btnConfirm
         '
         Me.btnConfirm.BackColor = System.Drawing.Color.Green
-        Me.btnConfirm.Location = New System.Drawing.Point(201, 337)
+        Me.btnConfirm.Location = New System.Drawing.Point(201, 362)
         Me.btnConfirm.Margin = New System.Windows.Forms.Padding(4)
         Me.btnConfirm.Name = "btnConfirm"
         Me.btnConfirm.Size = New System.Drawing.Size(91, 28)
         Me.btnConfirm.TabIndex = 34
         Me.btnConfirm.Text = "Confirm"
         Me.btnConfirm.UseVisualStyleBackColor = False
-
         '
         'Label11
         '
@@ -230,7 +230,7 @@ Partial Class frmNewStudent
         'btnCancel
         '
         Me.btnCancel.BackColor = System.Drawing.Color.Green
-        Me.btnCancel.Location = New System.Drawing.Point(103, 337)
+        Me.btnCancel.Location = New System.Drawing.Point(103, 362)
         Me.btnCancel.Margin = New System.Windows.Forms.Padding(4)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(91, 28)
@@ -238,12 +238,21 @@ Partial Class frmNewStudent
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = False
         '
+        'cmbSemester
+        '
+        Me.cmbSemester.FormattingEnabled = True
+        Me.cmbSemester.Location = New System.Drawing.Point(12, 316)
+        Me.cmbSemester.Name = "cmbSemester"
+        Me.cmbSemester.Size = New System.Drawing.Size(361, 24)
+        Me.cmbSemester.TabIndex = 37
+        '
         'frmNewStudent
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Green
-        Me.ClientSize = New System.Drawing.Size(400, 394)
+        Me.ClientSize = New System.Drawing.Size(400, 423)
+        Me.Controls.Add(Me.cmbSemester)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.btnConfirm)
@@ -294,4 +303,5 @@ Partial Class frmNewStudent
     Friend WithEvents txtUserType As TextBox
     Friend WithEvents Label6 As Label
     Friend WithEvents btnCancel As Button
+    Friend WithEvents cmbSemester As ComboBox
 End Class

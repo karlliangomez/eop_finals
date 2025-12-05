@@ -41,12 +41,13 @@ Partial Class frmViewPromissoryNote
         Me.Label8 = New System.Windows.Forms.Label()
         Me.txtStatus = New System.Windows.Forms.TextBox()
         Me.Label9 = New System.Windows.Forms.Label()
+        Me.txtSemester = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'cmbPNSelector
         '
         Me.cmbPNSelector.FormattingEnabled = True
-        Me.cmbPNSelector.Location = New System.Drawing.Point(22, 109)
+        Me.cmbPNSelector.Location = New System.Drawing.Point(22, 122)
         Me.cmbPNSelector.Name = "cmbPNSelector"
         Me.cmbPNSelector.Size = New System.Drawing.Size(385, 24)
         Me.cmbPNSelector.TabIndex = 56
@@ -54,28 +55,28 @@ Partial Class frmViewPromissoryNote
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(47, 200)
+        Me.Label10.Location = New System.Drawing.Point(47, 213)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(0, 16)
         Me.Label10.TabIndex = 51
         '
         'txtCourse
         '
-        Me.txtCourse.Location = New System.Drawing.Point(220, 81)
+        Me.txtCourse.Location = New System.Drawing.Point(220, 94)
         Me.txtCourse.Name = "txtCourse"
         Me.txtCourse.Size = New System.Drawing.Size(187, 22)
         Me.txtCourse.TabIndex = 49
         '
         'txtStudentName
         '
-        Me.txtStudentName.Location = New System.Drawing.Point(220, 53)
+        Me.txtStudentName.Location = New System.Drawing.Point(220, 66)
         Me.txtStudentName.Name = "txtStudentName"
         Me.txtStudentName.Size = New System.Drawing.Size(187, 22)
         Me.txtStudentName.TabIndex = 48
         '
         'txtStudentNo
         '
-        Me.txtStudentNo.Location = New System.Drawing.Point(220, 25)
+        Me.txtStudentNo.Location = New System.Drawing.Point(220, 38)
         Me.txtStudentNo.Name = "txtStudentNo"
         Me.txtStudentNo.ReadOnly = True
         Me.txtStudentNo.Size = New System.Drawing.Size(187, 22)
@@ -85,7 +86,7 @@ Partial Class frmViewPromissoryNote
         '
         Me.Label3.AutoSize = True
         Me.Label3.ForeColor = System.Drawing.Color.White
-        Me.Label3.Location = New System.Drawing.Point(22, 80)
+        Me.Label3.Location = New System.Drawing.Point(22, 93)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(53, 16)
         Me.Label3.TabIndex = 45
@@ -95,7 +96,7 @@ Partial Class frmViewPromissoryNote
         '
         Me.Label2.AutoSize = True
         Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(22, 52)
+        Me.Label2.Location = New System.Drawing.Point(22, 65)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(95, 16)
         Me.Label2.TabIndex = 44
@@ -105,7 +106,7 @@ Partial Class frmViewPromissoryNote
         '
         Me.Label5.AutoSize = True
         Me.Label5.ForeColor = System.Drawing.Color.White
-        Me.Label5.Location = New System.Drawing.Point(22, 25)
+        Me.Label5.Location = New System.Drawing.Point(22, 38)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(79, 16)
         Me.Label5.TabIndex = 43
@@ -114,28 +115,28 @@ Partial Class frmViewPromissoryNote
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(47, 88)
+        Me.Label1.Location = New System.Drawing.Point(47, 101)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(0, 16)
         Me.Label1.TabIndex = 42
         '
         'txtContactNo
         '
-        Me.txtContactNo.Location = New System.Drawing.Point(220, 195)
+        Me.txtContactNo.Location = New System.Drawing.Point(220, 208)
         Me.txtContactNo.Name = "txtContactNo"
         Me.txtContactNo.Size = New System.Drawing.Size(187, 22)
         Me.txtContactNo.TabIndex = 63
         '
         'txtExamType
         '
-        Me.txtExamType.Location = New System.Drawing.Point(220, 167)
+        Me.txtExamType.Location = New System.Drawing.Point(220, 180)
         Me.txtExamType.Name = "txtExamType"
         Me.txtExamType.Size = New System.Drawing.Size(187, 22)
         Me.txtExamType.TabIndex = 62
         '
         'txtPNNumber
         '
-        Me.txtPNNumber.Location = New System.Drawing.Point(220, 139)
+        Me.txtPNNumber.Location = New System.Drawing.Point(220, 152)
         Me.txtPNNumber.Name = "txtPNNumber"
         Me.txtPNNumber.ReadOnly = True
         Me.txtPNNumber.Size = New System.Drawing.Size(187, 22)
@@ -145,7 +146,7 @@ Partial Class frmViewPromissoryNote
         '
         Me.Label4.AutoSize = True
         Me.Label4.ForeColor = System.Drawing.Color.White
-        Me.Label4.Location = New System.Drawing.Point(22, 194)
+        Me.Label4.Location = New System.Drawing.Point(22, 207)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(79, 16)
         Me.Label4.TabIndex = 60
@@ -155,7 +156,7 @@ Partial Class frmViewPromissoryNote
         '
         Me.Label6.AutoSize = True
         Me.Label6.ForeColor = System.Drawing.Color.White
-        Me.Label6.Location = New System.Drawing.Point(22, 166)
+        Me.Label6.Location = New System.Drawing.Point(22, 179)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(79, 16)
         Me.Label6.TabIndex = 59
@@ -165,7 +166,7 @@ Partial Class frmViewPromissoryNote
         '
         Me.Label7.AutoSize = True
         Me.Label7.ForeColor = System.Drawing.Color.White
-        Me.Label7.Location = New System.Drawing.Point(22, 139)
+        Me.Label7.Location = New System.Drawing.Point(22, 152)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(80, 16)
         Me.Label7.TabIndex = 58
@@ -174,14 +175,14 @@ Partial Class frmViewPromissoryNote
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(47, 202)
+        Me.Label8.Location = New System.Drawing.Point(47, 215)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(0, 16)
         Me.Label8.TabIndex = 57
         '
         'txtStatus
         '
-        Me.txtStatus.Location = New System.Drawing.Point(220, 223)
+        Me.txtStatus.Location = New System.Drawing.Point(220, 236)
         Me.txtStatus.Name = "txtStatus"
         Me.txtStatus.Size = New System.Drawing.Size(187, 22)
         Me.txtStatus.TabIndex = 65
@@ -190,11 +191,19 @@ Partial Class frmViewPromissoryNote
         '
         Me.Label9.AutoSize = True
         Me.Label9.ForeColor = System.Drawing.Color.White
-        Me.Label9.Location = New System.Drawing.Point(22, 222)
+        Me.Label9.Location = New System.Drawing.Point(22, 235)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(47, 16)
         Me.Label9.TabIndex = 64
         Me.Label9.Text = "Status:"
+        '
+        'txtSemester
+        '
+        Me.txtSemester.Location = New System.Drawing.Point(22, 12)
+        Me.txtSemester.Name = "txtSemester"
+        Me.txtSemester.ReadOnly = True
+        Me.txtSemester.Size = New System.Drawing.Size(385, 22)
+        Me.txtSemester.TabIndex = 66
         '
         'frmViewPromissoryNote
         '
@@ -202,6 +211,7 @@ Partial Class frmViewPromissoryNote
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Green
         Me.ClientSize = New System.Drawing.Size(444, 281)
+        Me.Controls.Add(Me.txtSemester)
         Me.Controls.Add(Me.txtStatus)
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.txtContactNo)
@@ -248,4 +258,5 @@ Partial Class frmViewPromissoryNote
     Friend WithEvents Label8 As Label
     Friend WithEvents txtStatus As TextBox
     Friend WithEvents Label9 As Label
+    Friend WithEvents txtSemester As TextBox
 End Class

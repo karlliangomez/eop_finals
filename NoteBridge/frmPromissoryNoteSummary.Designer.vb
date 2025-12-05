@@ -28,6 +28,7 @@ Partial Class frmPromissoryNoteSummary
         Me.btnExport = New System.Windows.Forms.Button()
         Me.dgvPNRequests = New System.Windows.Forms.DataGridView()
         Me.cmbExamType = New System.Windows.Forms.ComboBox()
+        Me.cmbSemesterFilter = New System.Windows.Forms.ComboBox()
         CType(Me.dgvPNRequests, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -89,12 +90,21 @@ Partial Class frmPromissoryNoteSummary
         Me.cmbExamType.Size = New System.Drawing.Size(343, 24)
         Me.cmbExamType.TabIndex = 8
         '
+        'cmbSemesterFilter
+        '
+        Me.cmbSemesterFilter.FormattingEnabled = True
+        Me.cmbSemesterFilter.Location = New System.Drawing.Point(361, 12)
+        Me.cmbSemesterFilter.Name = "cmbSemesterFilter"
+        Me.cmbSemesterFilter.Size = New System.Drawing.Size(343, 24)
+        Me.cmbSemesterFilter.TabIndex = 9
+        '
         'frmPromissoryNoteSummary
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Green
         Me.ClientSize = New System.Drawing.Size(1156, 410)
+        Me.Controls.Add(Me.cmbSemesterFilter)
         Me.Controls.Add(Me.cmbExamType)
         Me.Controls.Add(Me.btnClose)
         Me.Controls.Add(Me.btnRefresh)
@@ -115,4 +125,5 @@ Partial Class frmPromissoryNoteSummary
     Friend WithEvents btnExport As Button
     Friend WithEvents dgvPNRequests As DataGridView
     Friend WithEvents cmbExamType As ComboBox
+    Friend WithEvents cmbSemesterFilter As ComboBox
 End Class

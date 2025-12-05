@@ -8,6 +8,7 @@ C:\Users\GOMEZ\Documents\NoteBridge\NoteBridge\obj\x64\Debug\NoteBridge.frmChang
 C:\Users\GOMEZ\Documents\NoteBridge\NoteBridge\obj\x64\Debug\NoteBridge.frmLogin.resources
 C:\Users\GOMEZ\Documents\NoteBridge\NoteBridge\obj\x64\Debug\NoteBridge.frmNewStudent.resources
 C:\Users\GOMEZ\Documents\NoteBridge\NoteBridge\obj\x64\Debug\NoteBridge.frmPaymentReports.resources
+C:\Users\GOMEZ\Documents\NoteBridge\NoteBridge\obj\x64\Debug\NoteBridge.frmPromissoryNoteSummary.resources
 C:\Users\GOMEZ\Documents\NoteBridge\NoteBridge\obj\x64\Debug\NoteBridge.frmRequestPromissoryNote.resources
 C:\Users\GOMEZ\Documents\NoteBridge\NoteBridge\obj\x64\Debug\NoteBridge.frmStudentMainMenu.resources
 C:\Users\GOMEZ\Documents\NoteBridge\NoteBridge\obj\x64\Debug\NoteBridge.frmStudentPayments.resources
@@ -20,4 +21,3 @@ C:\Users\GOMEZ\Documents\NoteBridge\NoteBridge\obj\x64\Debug\NoteBridge.vbproj.C
 C:\Users\GOMEZ\Documents\NoteBridge\NoteBridge\obj\x64\Debug\NoteBridge.exe
 C:\Users\GOMEZ\Documents\NoteBridge\NoteBridge\obj\x64\Debug\NoteBridge.xml
 C:\Users\GOMEZ\Documents\NoteBridge\NoteBridge\obj\x64\Debug\NoteBridge.pdb
-C:\Users\GOMEZ\Documents\NoteBridge\NoteBridge\obj\x64\Debug\NoteBridge.frmPromissoryNoteSummary.resources
