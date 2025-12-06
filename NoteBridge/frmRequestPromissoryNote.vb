@@ -1,5 +1,6 @@
 ﻿Imports System.Data.OleDb
-Imports System.Linq ' REQUIRED for LINQ operations on the Dictionary
+Imports System.Linq
+Imports System.Drawing
 
 Public Class frmRequestPromissoryNote
 
@@ -9,7 +10,7 @@ Public Class frmRequestPromissoryNote
     Private activeSemester As String
     Private nextInstallmentNo As Integer = 1
 
-    ' Dictionary to map Installment Number to Exam Type 
+    ' Dictionary to map Installment Number to Exam Type 
     Private ReadOnly ExamMap As New Dictionary(Of Integer, String) From {
         {2, "Long Test (Prelims)"},
         {3, "Prelim Exam"},
@@ -22,7 +23,7 @@ Public Class frmRequestPromissoryNote
     Private Sub frmRequestPromissoryNote_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Text = "Promissory Note Request"
 
-        ' Assume txtAmountDue, txtStudentNo, txtStudentName, txtCourse, txtYearSection, 
+        ' Assume txtAmountDue, txtStudentNo, txtStudentName, txtCourse, txtYearSection, 
         ' lblActiveSemester, cmbExamType, txtGuardianName exist.
 
         If String.IsNullOrEmpty(StudentNo) Then
@@ -47,7 +48,6 @@ Public Class frmRequestPromissoryNote
             Dim cmd As New OleDbCommand(sql, con)
             cmd.Parameters.AddWithValue("@sno", sno)
 
-            ' 🛑 FIX: Using block ensures dr is properly handled and closes the reader. 🛑
             Using dr As OleDbDataReader = cmd.ExecuteReader()
                 If dr.Read() Then
                     txtStudentNo.Text = sno
@@ -62,7 +62,7 @@ Public Class frmRequestPromissoryNote
                     Me.Close()
                     Exit Sub
                 End If
-            End Using ' dr is closed automatically here
+            End Using
 
             ' 3. Populate Exam Types based on the determined next installment
             PopulateExamTypes()
@@ -75,7 +75,6 @@ Public Class frmRequestPromissoryNote
     End Sub
 
     Private Sub DetermineActiveSemester(sno As String)
-        ' Find the semester and installment number with the earliest unpaid payment
         If Not IsConnOpen() Then Exit Sub
 
         Dim sqlActiveSem As String = "SELECT TOP 1 Semester, InstallmentNo FROM tblPaymentSchedule WHERE StudentNo = @sno AND IsPaid = FALSE ORDER BY Semester ASC, InstallmentNo ASC"
@@ -91,10 +90,9 @@ Public Class frmRequestPromissoryNote
                 lblActiveSemester.BackColor = System.Drawing.Color.LightYellow
             Else
                 activeSemester = ""
-                nextInstallmentNo = 7 ' Max installment number
+                nextInstallmentNo = 7
                 lblActiveSemester.Text = "Payment schedule clear."
                 lblActiveSemester.BackColor = System.Drawing.Color.LightGreen
-                ' We don't show the MessageBox here to prevent interruption on load.
             End If
         End Using
     End Sub
@@ -132,7 +130,6 @@ Public Class frmRequestPromissoryNote
         If Not IsConnOpen() Then Exit Sub
 
         Dim selectedExamType As String = cmbExamType.SelectedItem.ToString()
-        ' Use LINQ to find the corresponding InstallmentNo
         Dim instNo As Integer = ExamMap.FirstOrDefault(Function(kvp) kvp.Value = selectedExamType).Key
 
         If instNo = 0 Then
@@ -173,7 +170,46 @@ Public Class frmRequestPromissoryNote
     End Sub
 
     ' --------------------------------------------------------------------------------
-    ' ## Request Submission Logic
+    ' ## NEW FUNCTION: Check if the installment *before* the current one is paid
+    ' --------------------------------------------------------------------------------
+
+    Private Function IsPreviousInstallmentPaid(studentNo As String, semester As String, currentInstNo As Integer) As Boolean
+        ' For Installment 2 (Long Test), the previous one is 1 (Down Payment).
+        Dim prevInstNo As Integer = currentInstNo - 1
+
+        ' Installment 1 is the down payment; payment is always required from Inst. 2 onward.
+        If prevInstNo < 1 Then Return True
+
+        If Not IsConnOpen() Then Return False
+
+        Try
+            ' Check if the previous installment is marked as paid
+            Dim sqlCheck As String = "SELECT IsPaid FROM tblPaymentSchedule WHERE StudentNo = @sno AND Semester = @sem AND InstallmentNo = @prevInstNo"
+            Using cmdCheck As New OleDbCommand(sqlCheck, con)
+                cmdCheck.Parameters.AddWithValue("@sno", studentNo)
+                cmdCheck.Parameters.AddWithValue("@sem", semester)
+                cmdCheck.Parameters.AddWithValue("@prevInstNo", prevInstNo)
+
+                Dim result = cmdCheck.ExecuteScalar()
+
+                ' Access stores True as -1 and False as 0 for Yes/No fields.
+                If result IsNot DBNull.Value AndAlso result IsNot Nothing Then
+                    Return CBool(result)
+                Else
+                    Return False ' Previous installment record not found
+                End If
+            End Using
+
+        Catch ex As Exception
+            MessageBox.Show("Error checking previous payment: " & ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return False
+        Finally
+            If con.State = ConnectionState.Open Then con.Close()
+        End Try
+    End Function
+
+    ' --------------------------------------------------------------------------------
+    ' ## Request Submission Logic (MODIFIED for Auto-Approval)
     ' --------------------------------------------------------------------------------
 
     Private Sub btnSubmit_Click(sender As Object, e As EventArgs) Handles btnSubmit.Click
@@ -191,10 +227,25 @@ Public Class frmRequestPromissoryNote
         Dim selectedExamType As String = cmbExamType.SelectedItem.ToString()
         Dim guardianName As String = txtGuardianName.Text.Trim()
 
+        ' --- 1. DETERMINE STATUS ---
+        Dim requestStatus As String = "Pending (Review Required)"
+        Dim successMessage As String = "Promissory Note request for the " & selectedExamType & " submitted successfully for the " & activeSemester & ". Status is Pending."
+
+        ' Find the installment number for the selected exam
+        Dim currentInstNo As Integer = ExamMap.FirstOrDefault(Function(kvp) kvp.Value = selectedExamType).Key
+
+        If currentInstNo > 1 Then ' Only check previous payment if we are past the initial installment
+            If IsPreviousInstallmentPaid(StudentNo, activeSemester, currentInstNo) Then
+                requestStatus = "Approved (Auto)"
+                successMessage = "Promissory Note request for the " & selectedExamType & " has been **AUTOMATICALLY APPROVED** for the " & activeSemester & "."
+            End If
+        End If
+
+        ' --- 2. VALIDATION & INSERTION ---
         If Not IsConnOpen() Then Exit Sub
 
         Try
-            ' 1. Check if a PN already exists for this exam type and semester
+            ' 2.1. Check if a PN already exists for this exam type and semester
             Dim sqlCheck As String = "SELECT COUNT(*) FROM tblPNRequests WHERE StudentNo = @sno AND ExamType = @exam AND Semester = @sem"
             Using cmdCheck As New OleDbCommand(sqlCheck, con)
                 cmdCheck.Parameters.AddWithValue("@sno", StudentNo)
@@ -209,7 +260,7 @@ Public Class frmRequestPromissoryNote
                 End If
             End Using
 
-            ' 2. Insert the New PN Request
+            ' 2.2. Insert the New PN Request with the determined status
             Dim sqlInsert As String = "INSERT INTO tblPNRequests (StudentNo, ExamType, GuardianName, RequestDate, Status, Semester) " &
                                       "VALUES (@sno, @exam, @gname, @rdate, @status, @sem)"
             Using cmdInsert As New OleDbCommand(sqlInsert, con)
@@ -217,13 +268,13 @@ Public Class frmRequestPromissoryNote
                 cmdInsert.Parameters.AddWithValue("@exam", selectedExamType)
                 cmdInsert.Parameters.AddWithValue("@gname", guardianName)
                 cmdInsert.Parameters.AddWithValue("@rdate", DateTime.Now.ToShortDateString())
-                cmdInsert.Parameters.AddWithValue("@status", "Pending (Review Required)")
+                cmdInsert.Parameters.AddWithValue("@status", requestStatus) ' 🛑 Use determined status 🛑
                 cmdInsert.Parameters.AddWithValue("@sem", activeSemester)
 
                 cmdInsert.ExecuteNonQuery()
             End Using
 
-            MessageBox.Show("Promissory Note request for the " & selectedExamType & " submitted successfully for the " & activeSemester & ". Status is Pending.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show(successMessage, "Request Submitted", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
             ClearFields()
             Me.Close()

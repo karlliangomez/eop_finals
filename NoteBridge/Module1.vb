@@ -16,7 +16,7 @@ Module Module1
     ' --- Connection Subroutine ---
     Public Sub ConnectDB()
         ' *** IMPORTANT: VERIFY AND REPLACE THE CONNECTION STRING BELOW WITH YOUR ACTUAL PATH ***
-        con.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\GOMEZ\Documents\NoteBridge\NoteBridge\db_NoteBridge.accdb"
+        con.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\ID_PICTURE\Music\eop_finals\NoteBridge\db_NoteBridge.accdb"
     End Sub
 
     ' --- Safe Connection Check ---
